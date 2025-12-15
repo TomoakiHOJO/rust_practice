@@ -1,10 +1,29 @@
-mod models;
+// シングルスレッドの非同期処理の簡単な例
+// ※ tokio クレートを使うバージョンです（ランタイムは 1 スレッド）。
 
-use models::{Somecode, Othercode, print_data};
+use tokio::time::{sleep, Duration};
 
-fn main() {
-    let code = Somecode::new(10, 20);
-    let other = Othercode::new(3.14, 2.71);
-    print_data(&code);
-    print_data(&other);
+// 疑似的な「重い処理」: 少しずつメッセージを出しながら非同期で待つ
+async fn task(name: &str) {
+	for i in 0..5 {
+		println!("{}: ステップ {}", name, i);
+		// ここで非同期に待つ（スレッドは増えない）
+		sleep(Duration::from_millis(200)).await;
+	}
 }
+
+// シングルスレッドランタイム（current_thread）で動かす
+#[tokio::main(flavor = "current_thread")]
+async fn main() {
+	println!("開始（シングルスレッド非同期）");
+
+	// 2つの非同期タスクを同時進行させる（でもスレッドは 1 本）
+	let t1 = task("タスクA");
+	let t2 = task("タスクB");
+
+	// どちらも終わるまで待つ
+	tokio::join!(t1, t2);
+
+	println!("終了");
+}
+
