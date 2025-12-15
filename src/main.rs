@@ -20,9 +20,10 @@ async fn main() {
 	// 2つの非同期タスクを同時進行させる（でもスレッドは 1 本）
 	let t1 = task("タスクA");
 	let t2 = task("タスクB");
+    let t3 = task("タスクC");
 
 	// どちらも終わるまで待つ
-	tokio::join!(t1, t2);
+	tokio::join!(t1, t2, t3);
 
 	println!("終了");
 }
