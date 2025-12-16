@@ -21,6 +21,7 @@ async fn main() {
 	let t1 = task("タスクA");
 	let t2 = task("タスクB");
     let t3 = task("タスクC");
+    let t4 = task("タスクD");
 
 	// どちらも終わるまで待つ
 	tokio::join!(t1, t2, t3);
