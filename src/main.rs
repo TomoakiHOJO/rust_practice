@@ -24,7 +24,6 @@ async fn main() {
 
 	// どちらも終わるまで待つ
 	tokio::join!(t1, t2, t3);
-
 	println!("終了");
 }
 
